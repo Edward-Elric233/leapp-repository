@@ -159,7 +159,7 @@ def compute_pkg_changes_between_consequent_releases(source_installed_pkgs,
                 removed_pkgs = target_pkgs.intersection(event.in_pkgs)
                 removed_pkgs_str = ', '.join(str(pkg) for pkg in removed_pkgs) if removed_pkgs else '[]'
                 added_pkgs_str = ', '.join(str(pkg) for pkg in event.out_pkgs) if event.out_pkgs else '[]'
-                logger.debug('Applying event %d (%s): replacing packages %s with %s',
+                logger.debug('Applying event %s (%s): replacing packages %s with %s',
                              event.id, event.action, removed_pkgs_str, added_pkgs_str)
 
                 # In pkgs are present, event can be applied
@@ -505,7 +505,7 @@ def process():
     source_pkgs = apply_transaction_configuration(source_pkgs)
 
     # Keep track of what repoids have the source packages to be able to determine what are the PESIDs of the computed
-    # packages of the target system, so we can distinguish what needs to be repomapped
+    # packages of thp target system, so we can distinguish what needs to be repomapped
     repoids_of_source_pkgs = {pkg.repository for pkg in source_pkgs}
 
     events = remove_leapp_related_events(events)

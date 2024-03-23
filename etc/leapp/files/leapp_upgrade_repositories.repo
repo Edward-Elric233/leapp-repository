@@ -1,0 +1,19 @@
+[baseos-rpms]
+name = BaseOS (RPMs)
+baseurl=https://mirrors.opencloudos.tech/opencloudos/$releasever/BaseOS/$basearch/os/
+enabled=0
+gpgcheck=0
+
+
+[appstream-rpms]
+name = AppStream (RPMs)
+baseurl= https://mirrors.opencloudos.tech/opencloudos/$releasever/AppStream/$basearch/os/
+enabled=0
+gpgcheck=0
+
+
+[extras-rpms]
+name = Updates (RPMs)
+baseurl= https://mirrors.opencloudos.tech/opencloudos/$releasever/extras/$basearch/os/
+enabled=0
+gpgcheck=0

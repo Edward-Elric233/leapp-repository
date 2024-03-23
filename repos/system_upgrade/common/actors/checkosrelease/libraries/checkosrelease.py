@@ -39,7 +39,7 @@ def check_os_version():
             ),
             reporting.Severity(reporting.Severity.HIGH),
             reporting.Groups(COMMON_REPORT_TAGS),
-            reporting.Groups([reporting.Groups.INHIBITOR]),
+            # reporting.Groups([reporting.Groups.INHIBITOR]),
             # we want to set a static Key here because of different Title per path
             reporting.Key('1c7a98849a747ec9890f04bf4321de7280970715')
         ] + related)

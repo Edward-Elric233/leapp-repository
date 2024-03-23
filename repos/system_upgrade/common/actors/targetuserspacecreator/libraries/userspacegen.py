@@ -113,7 +113,7 @@ class _InputData(object):
         self.rhui_info = next(api.consume(RHUIInfo), None)
         if not self.rhsm_info and not rhsm.skip_rhsm():
             api.current_logger().warning('Could not receive RHSM information - Is this system registered?')
-            raise StopActorExecution()
+            # raise StopActorExecution()
         if rhsm.skip_rhsm() and self.rhsm_info:
             # this should not happen. if so, raise an error as something in
             # other actors is wrong really
@@ -233,9 +233,19 @@ def prepare_target_userspace(context, userspace_dir, enabled_repos, packages):
         cmd = ['dnf', 'install', '-y']
         if is_nogpgcheck_set():
             cmd.append('--nogpgcheck')
+
+        if target_major_version == '3':
+            # api.current_logger().debug('edwardewang debug')
+            platform_version = '8'
+        else:
+            platform_version = target_major_version
+
+        packages.append("util-linux")
+
         cmd += [
-            '--setopt=module_platform_id=platform:el{}'.format(target_major_version),
+            '--setopt=module_platform_id=platform:el{}'.format(platform_version),
             '--setopt=keepcache=1',
+            '--setopt=install_weak_deps=False',  # zy-add
             '--releasever', api.current_actor().configuration.version.target,
             '--installroot', install_root_dir,
             '--disablerepo', '*'
@@ -638,66 +648,67 @@ def _get_product_certificate_path():
     """
     Retrieve the required / used product certificate for RHSM.
     """
-    architecture = api.current_actor().configuration.architecture
-    target_version = api.current_actor().configuration.version.target
-    target_product_type = get_product_type('target')
-    certs_dir = api.get_common_folder_path(PROD_CERTS_FOLDER)
-
-    # We do not need any special certificates to reach repos from non-ga channels, only beta requires special cert.
-    if target_product_type != 'beta':
-        target_product_type = 'ga'
-
-    prod_certs = {
-        'x86_64': {
-            'ga': '479.pem',
-            'beta': '486.pem',
-        },
-        'aarch64': {
-            'ga': '419.pem',
-            'beta': '363.pem',
-        },
-        'ppc64le': {
-            'ga': '279.pem',
-            'beta': '362.pem',
-        },
-        's390x': {
-            'ga': '72.pem',
-            'beta': '433.pem',
-        }
-    }
-
-    try:
-        cert = prod_certs[architecture][target_product_type]
-    except KeyError as e:
-        raise StopActorExecutionError(message='Failed to determine what certificate to use for {}.'.format(e))
-
-    cert_path = os.path.join(certs_dir, target_version, cert)
-    if not os.path.isfile(cert_path):
-        additional_summary = ''
-        if target_product_type != 'ga':
-            additional_summary = (
-                ' This can happen when upgrading a beta system and the chosen target version does not have'
-                ' beta certificates attached (for example, because the GA has been released already).'
-
-            )
-
-        reporting.create_report([
-            reporting.Title('Cannot find the product certificate file for the chosen target system.'),
-            reporting.Summary(
-                'Expected certificate: {cert} with path {path} but it could not be found.{additional}'.format(
-                    cert=cert, path=cert_path, additional=additional_summary)
-            ),
-            reporting.Groups([reporting.Groups.REPOSITORY]),
-            reporting.Groups([reporting.Groups.INHIBITOR]),
-            reporting.Severity(reporting.Severity.HIGH),
-            reporting.Remediation(hint=(
-                'Set the corresponding target os version in the LEAPP_DEVEL_TARGET_RELEASE environment variable for'
-                'which the {cert} certificate is provided'.format(cert=cert)
-            )),
-        ])
-        raise StopActorExecution()
-
-    return cert_path
+    return None
+    # architecture = api.current_actor().configuration.architecture
+    # target_version = api.current_actor().configuration.version.target
+    # target_product_type = get_product_type('target')
+    # certs_dir = api.get_common_folder_path(PROD_CERTS_FOLDER)
+    #
+    # # We do not need any special certificates to reach repos from non-ga channels, only beta requires special cert.
+    # if target_product_type != 'beta':
+    #     target_product_type = 'ga'
+    #
+    # prod_certs = {
+    #     'x86_64': {
+    #         'ga': '479.pem',
+    #         'beta': '486.pem',
+    #     },
+    #     'aarch64': {
+    #         'ga': '419.pem',
+    #         'beta': '363.pem',
+    #     },
+    #     'ppc64le': {
+    #         'ga': '279.pem',
+    #         'beta': '362.pem',
+    #     },
+    #     's390x': {
+    #         'ga': '72.pem',
+    #         'beta': '433.pem',
+    #     }
+    # }
+    #
+    # try:
+    #     cert = prod_certs[architecture][target_product_type]
+    # except KeyError as e:
+    #     raise StopActorExecutionError(message='Failed to determine what certificate to use for {}.'.format(e))
+    #
+    # cert_path = os.path.join(certs_dir, target_version, cert)
+    # if not os.path.isfile(cert_path):
+    #     additional_summary = ''
+    #     if target_product_type != 'ga':
+    #         additional_summary = (
+    #             ' This can happen when upgrading a beta system and the chosen target version does not have'
+    #             ' beta certificates attached (for example, because the GA has been released already).'
+    #
+    #         )
+    #
+    #     reporting.create_report([
+    #         reporting.Title('Cannot find the product certificate file for the chosen target system.'),
+    #         reporting.Summary(
+    #             'Expected certificate: {cert} with path {path} but it could not be found.{additional}'.format(
+    #                 cert=cert, path=cert_path, additional=additional_summary)
+    #         ),
+    #         reporting.Groups([reporting.Groups.REPOSITORY]),
+    #         reporting.Groups([reporting.Groups.INHIBITOR]),
+    #         reporting.Severity(reporting.Severity.HIGH),
+    #         reporting.Remediation(hint=(
+    #             'Set the corresponding target os version in the LEAPP_DEVEL_TARGET_RELEASE environment variable for'
+    #             'which the {cert} certificate is provided'.format(cert=cert)
+    #         )),
+    #     ])
+    #     raise StopActorExecution()
+    #
+    # return cert_path
 
 
 def _create_target_userspace_directories(target_userspace):
@@ -1032,8 +1043,8 @@ def _gather_target_repositories(context, indata, prod_cert_path):
     :param prod_cert_path: path where the target product cert is stored
     :type prod_cert_path: string
     """
-    rhsm.set_container_mode(context)
-    rhsm.switch_certificate(context, indata.rhsm_info, prod_cert_path)
+    # rhsm.set_container_mode(context)
+    # rhsm.switch_certificate(context, indata.rhsm_info, prod_cert_path)
 
     _install_custom_repofiles(context, indata.custom_repofiles)
     return gather_target_repositories(context, indata)
@@ -1115,8 +1126,13 @@ def install_target_rhui_client_if_needed(context, indata):
 
     dnf_transaction_steps = src_client_remove_steps + target_client_install_steps + ['transaction run']
 
+    if target_major_version == '3':
+        # api.current_logger().debug('edwardewang debug')
+        platform_version = '8'
+    else:
+        platform_version = target_major_version
     cmd += [
-        '--setopt=module_platform_id=platform:el{}'.format(target_major_version),
+        '--setopt=module_platform_id=platform:el{}'.format(platform_version),
         '--setopt=keepcache=1',
         '--releasever', api.current_actor().configuration.version.target,
         '--disableplugin', 'subscription-manager',

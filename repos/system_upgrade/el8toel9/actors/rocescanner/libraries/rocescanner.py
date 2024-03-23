@@ -14,8 +14,6 @@ def get_roce_nics_lines():
         ens1765: connected to ens1765
             "Mellanox MT27710"
             ethernet (mlx5_core), 82:28:9B:1B:28:2C, hw, mtu 1500
-            inet4 192.168.0.1/16
-            route4 192.168.0.1/16
             inet6 fe80::d8c5:3a67:1abb:dcca/64
             route6 fe80::/64
     In this case, the function returns the list of lines with RoCE NICs.

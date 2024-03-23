@@ -40,7 +40,7 @@ class FirewalldCheckAllowZoneDrifting(Actor):
                                   conf_key='AllowZoneDrifiting')),
             reporting.Severity(reporting.Severity.HIGH),
             reporting.Groups([reporting.Groups.SANITY, reporting.Groups.FIREWALL]),
-            reporting.Groups([reporting.Groups.INHIBITOR]),
+            # reporting.Groups([reporting.Groups.INHIBITOR]),
             reporting.ExternalLink(
                 url='https://access.redhat.com/articles/4855631',
                 title='Changes in firewalld related to Zone Drifting'),

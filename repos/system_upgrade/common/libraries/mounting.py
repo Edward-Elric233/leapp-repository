@@ -82,7 +82,7 @@ class IsolationType(object):
             binds = ['--bind={}'.format(bind) for bind in self.binds]
             setenvs = ['--setenv={}={}'.format(env.name, env.value) for env in self.env_vars]
             final_cmd = ['systemd-nspawn', '--register=no', '--quiet']
-            if get_source_major_version() != '7':
+            if get_source_major_version() != '7' and get_source_major_version() != '2':
                 # TODO: check whether we could use the --keep unit on el7 too.
                 # in such a case, just add line into the previous solution..
                 # TODO: the same about --capability=all

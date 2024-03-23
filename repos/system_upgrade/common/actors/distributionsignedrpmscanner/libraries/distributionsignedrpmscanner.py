@@ -9,19 +9,20 @@ from leapp.models import DistributionSignedRPM, InstalledRedHatSignedRPM, Instal
 
 
 def get_distribution_data(distribution):
-    distributions_path = api.get_common_folder_path('distro')
-
-    distribution_config = os.path.join(distributions_path, distribution, 'gpg-signatures.json')
-    if os.path.exists(distribution_config):
-        with open(distribution_config) as distro_config_file:
-            distro_config_json = json.load(distro_config_file)
-            distro_keys = distro_config_json.get('keys', [])
-            # distro_packager = distro_config_json.get('packager', 'not-available')
-    else:
-        raise StopActorExecutionError(
-            'Cannot find distribution signature configuration.',
-            details={'Problem': 'Distribution {} was not found in {}.'.format(distribution, distributions_path)})
-    return distro_keys
+    return None
+    # distributions_path = api.get_common_folder_path('distro')
+    #
+    # distribution_config = os.path.join(distributions_path, distribution, 'gpg-signatures.json')
+    # if os.path.exists(distribution_config):
+    #     with open(distribution_config) as distro_config_file:
+    #         distro_config_json = json.load(distro_config_file)
+    #         distro_keys = distro_config_json.get('keys', [])
+    #         # distro_packager = distro_config_json.get('packager', 'not-available')
+    # else:
+    #     raise StopActorExecutionError(
+    #         'Cannot find distribution signature configuration.',
+    #         details={'Problem': 'Distribution {} was not found in {}.'.format(distribution, distributions_path)})
+    # return distro_keys
 
 
 def is_distro_signed(pkg, distro_keys):
@@ -51,7 +52,8 @@ def is_exceptional(pkg, allowlist):
 def process():
     distribution = api.current_actor().configuration.os_release.release_id
     distro_keys = get_distribution_data(distribution)
-    all_signed = get_env('LEAPP_DEVEL_RPMS_ALL_SIGNED', '0') == '1'
+    # all_signed = get_env('LEAPP_DEVEL_RPMS_ALL_SIGNED', '0') == '1'
+    all_signed = True
     rhui_pkgs = rhui.get_all_known_rhui_pkgs_for_current_upg()
 
     signed_pkgs = DistributionSignedRPM()

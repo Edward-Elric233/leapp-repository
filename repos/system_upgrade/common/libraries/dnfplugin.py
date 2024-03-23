@@ -20,7 +20,7 @@ _DEDICATED_URL = 'https://access.redhat.com/solutions/7011704'
 class _DnfPluginPathStr(str):
     _PATHS = {
         "8": os.path.join('/lib/python3.6/site-packages/dnf-plugins', DNF_PLUGIN_NAME),
-        "9": os.path.join('/lib/python3.9/site-packages/dnf-plugins', DNF_PLUGIN_NAME),
+        "9": os.path.join('/lib/python3.11/site-packages/dnf-plugins', DNF_PLUGIN_NAME),
     }
 
     def __init__(self):  # noqa: W0231; pylint: disable=super-init-not-called
@@ -83,6 +83,11 @@ def build_plugin_data(target_repoids, debug, test, tasks, on_aws):
     Generates a dictionary with the DNF plugin data.
     """
     # get list of repo IDs of target repositories that should be used for upgrade
+    target_major_version = get_target_major_version()
+    if target_major_version == '3':
+        platform_version = '8'
+    else:
+        platform_version = target_major_version
     data = {
         'pkgs_info': {
             'local_rpms': [os.path.join('/installroot', pkg.lstrip('/')) for pkg in tasks.local_rpms],
@@ -98,7 +103,7 @@ def build_plugin_data(target_repoids, debug, test, tasks, on_aws):
             'disable_repos': True,
             'enable_repos': target_repoids,
             'gpgcheck': not is_nogpgcheck_set(),
-            'platform_id': 'platform:el{}'.format(get_target_major_version()),
+            'platform_id': 'platform:el{}'.format(platform_version),
             'releasever': get_target_version(),
             'installroot': '/installroot',
             'test_flag': test
@@ -366,8 +371,14 @@ def install_initramdisk_requirements(packages, target_userspace_info, used_repos
             '-y']
         if is_nogpgcheck_set():
             cmd.append('--nogpgcheck')
+
+        target_major_version = get_target_major_version()
+        if target_major_version == '3':
+            platform_version = '8'
+        else:
+            platform_version = target_major_version
         cmd += [
-            '--setopt=module_platform_id=platform:el{}'.format(get_target_major_version()),
+            '--setopt=module_platform_id=platform:el{}'.format(platform_version),
             '--setopt=keepcache=1',
             '--releasever', api.current_actor().configuration.version.target,
             '--disablerepo', '*'

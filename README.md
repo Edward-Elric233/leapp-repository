@@ -1,31 +1,21 @@
-**Before doing anything, please read
-[Leapp framework documentation](https://leapp.readthedocs.io/).**
+# OpenCloudOS IPU Tool
 
----
+OpenCloudOS IPU Tool 是基于 RHEL Leapp-repository 的一款升级工具，用于原地迁移 OpenCloudOS
+系统到新的主要版本，旨在提供一个平滑、安全的迁移路径，同时保持系统设置和数据的完整性。
+通过持续的更新、规范化的开发流程和强大的功能扩展，希望成为TS系统用户的理想选择。
 
-## Troubleshooting
+本工具在Red Hat开发的迁移工具<https://github.com/oamg/leapp-repository>的基础上进行开发，
+除了更好地完成基本的OpenCloudOS原地迁移功能，还希望达到以下目标：
 
-### Where can I report an issue or RFE related to the framework or other actors?
+1. **流程规范化**：严格遵循 Leapp-repository 的开发规范，以保证升级流程的标准化和一致性。通过最小化代码改动，
+        实现高效且可靠的系统升级，同时减少与现有系统架构的耦合。
+2. **多路径兼容性**：设计考虑多种升级路径的兼容性，适应不同版本的 OpenCloudOS 系统。 
+        通过自动分析系统信息或接受明确的命令行参数，实现精确控制升级过程。
 
-- GitHub issues are preferred:
-  - Leapp framework: [https://github.com/oamg/leapp/issues/new/choose](https://github.com/oamg/leapp/issues/new/choose)
-  - Leapp actors: [https://github.com/oamg/leapp-repository/issues/new/choose](https://github.com/oamg/leapp-repository/issues/new/choose)
-
-- When filing an issue, include:
-  - Steps to reproduce the issue
-  - *All files in /var/log/leapp*
-  - */var/lib/leapp/leapp.db*
-  - *journalctl*
-  - If you want, you can optionally send anything else would you like to provide (e.g. storage info)
-
-**For your convenience you can pack all logs with this command:**
-
-`# tar -czf leapp-logs.tgz /var/log/leapp /var/lib/leapp/leapp.db`
-
-Then you may attach only the `leapp-logs.tgz` file.
-
-### Where can I seek help?
-We’ll gladly answer your questions and lead you to through any troubles with the
-actor development.
-
-You can reach us at IRC: `#leapp` on Libera.Chat.
+3. **持续更新维护**：定期合并上游社区的最新提交，不断增强工具功能并修复已知漏洞，确保工具始终与最新的技术发展保持同步。
+4. **文档化**：提供详尽的 ChangeLog，记录每次更新和修订的详细信息。
+        同时，完善文档，包括必要的外部文档链接，以便用户更好地理解和使用工具。
+5. **功能增强**：
+    - **Web系统可视化控制**：集成Web界面，允许用户直观地管理和控制迁移流程，提供友好的操作体验和实时的进度反馈。
+    - **自动化RPM差异数据提取**：开发一套自动化工具，用于分析并提取升级前后 RPM 包的差异数据，帮助用户理解每次升级的具体变化。
+    - **迁移前备份功能**：增加在执行迁移操作前自动备份系统的功能，以防万一需要恢复到原始状态。

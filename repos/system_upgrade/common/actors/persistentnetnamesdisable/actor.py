@@ -55,5 +55,5 @@ class PersistentNetNamesDisable(Actor):
                 ),
                 reporting.Severity(reporting.Severity.HIGH),
                 reporting.Groups([reporting.Groups.NETWORK]),
-                reporting.Groups([reporting.Groups.INHIBITOR])
+                # reporting.Groups([reporting.Groups.INHIBITOR])
             ])

@@ -57,7 +57,7 @@ def scan():
     config = '/etc/default/grub'
     # Check for GRUB_CMDLINE_LINUX syntax errors
     # XXX FIXME(ivasilev) Can we make this check a common one? For now let's limit it to rhel7->rhel8 only
-    if version.get_source_major_version() == '7':
+    if version.get_source_major_version() == '7' or version.get_source_major_version() == '2':
         if not architecture.matches_architecture(architecture.ARCH_S390X):
             # For now, skip just s390x, that's only one that is failing now
             # because ZIPL is used there

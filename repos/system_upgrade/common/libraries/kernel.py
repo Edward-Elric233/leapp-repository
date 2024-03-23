@@ -6,7 +6,7 @@ from leapp.libraries.stdlib import api, CalledProcessError, run
 KernelPkgInfo = namedtuple('KernelPkgInfo', ('name', 'version', 'release', 'arch', 'nevra'))
 
 
-KERNEL_UNAME_R_PROVIDES = ['kernel-uname-r', 'kernel-rt-uname-r']
+KERNEL_UNAME_R_PROVIDES = ['kernel', 'kernel-rt-uname-r']
 
 
 class KernelType(object):
@@ -109,7 +109,7 @@ def get_kernel_pkg_info_for_uname_r(uname_r):
         provided_uname = get_uname_r_provided_by_kernel_pkg(kernel_pkg_nevra)  # We know all packages provide a uname
         if not provided_uname:
             api.current_logger().warning('Failed to obtain uname-r provided by %s', kernel_pkg_nevra)
-        if provided_uname == uname_r:
+        if uname_r in provided_uname:
             return get_kernel_pkg_info(kernel_pkg_nevra)
 
     raise StopActorExecutionError(message='Unable to obtain kernel information of the booted kernel: no package is '

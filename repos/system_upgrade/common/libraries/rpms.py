@@ -19,23 +19,27 @@ class LeappComponents(object):
 
 
 _LEAPP_PACKAGES_MAP = {
-        LeappComponents.FRAMEWORK: {'7': {'pkgs': ['leapp', 'python2-leapp'],
-                                          'deps': ['leapp-deps']},
-                                    '8': {'pkgs': ['leapp', 'python3-leapp'],
-                                          'deps': ['leapp-deps']}
-                                    },
-        LeappComponents.REPOSITORY: {'7': {'pkgs': ['leapp-upgrade-el7toel8'],
-                                           'deps': ['leapp-upgrade-el7toel8-deps']},
-                                     '8': {'pkgs': ['leapp-upgrade-el8toel9'],
-                                           'deps': ['leapp-upgrade-el8toel9-deps']}
-                                     },
-        LeappComponents.COCKPIT: {'7': {'pkgs': ['cockpit-leapp']},
-                                  '8': {'pkgs': ['cockpit-leapp']}
-                                  },
-        LeappComponents.TOOLS: {'7': {'pkgs': ['snactor']},
-                                '8': {'pkgs': ['snactor']}
-                                }
-        }
+    LeappComponents.FRAMEWORK: {
+        '7': {'pkgs': ['leapp', 'python2-leapp'],
+              'deps': ['leapp-deps']},
+        '8': {'pkgs': ['leapp', 'python3-leapp'],
+              'deps': ['leapp-deps']}
+    },
+    LeappComponents.REPOSITORY: {
+        '7': {'pkgs': ['leapp-upgrade-el7toel8'],
+              'deps': ['leapp-upgrade-el7toel8-deps']},
+        '8': {'pkgs': ['leapp-upgrade-el8toel9'],
+              'deps': ['leapp-upgrade-el8toel9-deps']}
+    },
+    LeappComponents.COCKPIT: {
+        '7': {'pkgs': ['cockpit-leapp']},
+        '8': {'pkgs': ['cockpit-leapp']}
+    },
+    LeappComponents.TOOLS: {
+        '7': {'pkgs': ['snactor']},
+        '8': {'pkgs': ['snactor']}
+    }
+}
 
 GET_LEAPP_PACKAGES_DEFAULT_COMPONENTS = frozenset((LeappComponents.FRAMEWORK,
                                                    LeappComponents.REPOSITORY,
@@ -74,8 +78,8 @@ def create_lookup(model, field, keys, context=stdlib.api):
     except TypeError:
         # data is not iterable, not lookup can be built
         stdlib.api.current_logger().error(
-                "{model}.{field}.{keys} is not iterable, can't build lookup".format(
-                    model=model, field=field, keys=keys))
+            "{model}.{field}.{keys} is not iterable, can't build lookup".format(
+                model=model, field=field, keys=keys))
         return set()
 
 
@@ -181,20 +185,20 @@ def _get_leapp_packages_of_type(major_version, component, type_='pkgs'):
     if not components:
         error_msg = ("At least one component must be specified when calling this"
                      " function, available choices are {choices}".format(
-                         choices=sorted(_LEAPP_PACKAGES_MAP.keys()))
-                     )
+            choices=sorted(_LEAPP_PACKAGES_MAP.keys()))
+        )
         raise ValueError(error_msg)
 
     for comp in components:
         for a_major_version in major_versions:
             if comp not in _LEAPP_PACKAGES_MAP:
                 error_msg = "The requested component {comp} is unknown, available choices are {choices}".format(
-                        comp=component, choices=sorted(_LEAPP_PACKAGES_MAP.keys()))
+                    comp=component, choices=sorted(_LEAPP_PACKAGES_MAP.keys()))
                 raise ValueError(error_msg)
 
             if a_major_version not in _LEAPP_PACKAGES_MAP[comp]:
                 error_msg = "The requested major_version {ver} is unknown, available choices are {choices}".format(
-                        ver=a_major_version, choices=sorted(_LEAPP_PACKAGES_MAP[comp].keys()))
+                    ver=a_major_version, choices=sorted(_LEAPP_PACKAGES_MAP[comp].keys()))
                 raise ValueError(error_msg)
 
             # All went well otherwise, get the data

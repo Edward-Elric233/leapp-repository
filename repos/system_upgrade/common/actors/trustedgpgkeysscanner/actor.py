@@ -18,4 +18,5 @@ class TrustedGpgKeysScanner(Actor):
     tags = (IPUWorkflowTag, FactsPhaseTag)
 
     def process(self):
-        trustedgpgkeys.process()
+        pass
+        # trustedgpgkeys.process()

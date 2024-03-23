@@ -27,7 +27,7 @@ def get_kernel_pkg_name(rhel_major_version, kernel_type):
         }
     else:
         kernel_pkg_name_table = {
-            kernel_lib.KernelType.ORDINARY: 'kernel-core',
+            kernel_lib.KernelType.ORDINARY: 'kernel',
             kernel_lib.KernelType.REALTIME: 'kernel-rt-core'
         }
     return kernel_pkg_name_table[kernel_type]
@@ -39,7 +39,7 @@ def get_target_kernel_package_nevra(kernel_pkg_name):
     except CalledProcessError:
         return ''
 
-    target_kernel_el = 'el{}'.format(get_target_major_version())
+    target_kernel_el = 'tl{}'.format(get_target_major_version())
     for kernel_nevra in kernel_nevras:
         if target_kernel_el in kernel_nevra:
             return kernel_nevra

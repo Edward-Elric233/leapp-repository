@@ -189,10 +189,11 @@ def prepare_configuration(args):
     else:
         os.environ['LEAPP_EXPERIMENTAL'] = '0'
     os.environ['LEAPP_UNSUPPORTED'] = '0' if os.getenv('LEAPP_UNSUPPORTED', '0') == '0' else '1'
+    # TODO: subscription is not supported at this stage, may consider integraint with TManager after
     if args.no_rhsm:
         os.environ['LEAPP_NO_RHSM'] = '1'
     elif not os.path.exists('/usr/sbin/subscription-manager'):
-        os.environ['LEAPP_NO_RHSM'] = '1'
+        os.environ['LEAPP_NO_RHSM'] = '1'   # default
     elif os.getenv('LEAPP_NO_RHSM') != '1':
         os.environ['LEAPP_NO_RHSM'] = os.getenv('LEAPP_DEVEL_SKIP_RHSM', '0')
 
@@ -202,8 +203,8 @@ def prepare_configuration(args):
     if args.enablerepo:
         os.environ['LEAPP_ENABLE_REPOS'] = ','.join(args.enablerepo)
 
-    if os.environ.get('LEAPP_NO_RHSM', '0') == '1' or args.no_rhsm_facts:
-        os.environ['LEAPP_NO_RHSM_FACTS'] = '1'
+    # if os.environ.get('LEAPP_NO_RHSM', '0') == '1' or args.no_rhsm_facts:
+    os.environ['LEAPP_NO_RHSM_FACTS'] = '1' # change to default
 
     if args.channel:
         os.environ['LEAPP_TARGET_PRODUCT_CHANNEL'] = args.channel
@@ -215,8 +216,9 @@ def prepare_configuration(args):
         # Make sure we convert rel paths into abs ones while we know what CWD is
         os.environ['LEAPP_TARGET_ISO'] = os.path.abspath(target_iso_path)
 
-    if args.nogpgcheck:
-        os.environ['LEAPP_NOGPGCHECK'] = '1'
+    # TODO: consider how to support gpgcheck
+    # if args.nogpgcheck:
+    os.environ['LEAPP_NOGPGCHECK'] = '1'    # change to default
 
     # Check upgrade path and fail early if it's unsupported
     target_version, flavor = command_utils.vet_upgrade_path(args)

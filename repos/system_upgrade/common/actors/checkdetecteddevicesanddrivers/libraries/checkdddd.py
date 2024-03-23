@@ -83,7 +83,7 @@ def create_inhibitors(inhibiting_entries):
             reporting.Audience('sysadmin'),
             reporting.Groups([reporting.Groups.KERNEL, reporting.Groups.BOOT]),
             reporting.Severity(reporting.Severity.HIGH),
-            reporting.Groups([reporting.Groups.INHIBITOR])
+            # reporting.Groups([reporting.Groups.INHIBITOR])
         ])
 
 

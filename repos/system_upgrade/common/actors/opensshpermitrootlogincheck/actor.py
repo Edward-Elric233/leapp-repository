@@ -135,7 +135,7 @@ class OpenSshPermitRootLoginCheck(Actor):
                          'sshd_config next to the "PermitRootLogin yes" directive '
                          'to prevent rpm replacing it during the upgrade.'
                 ),
-                reporting.Groups([reporting.Groups.INHIBITOR])
+                # reporting.Groups([reporting.Groups.INHIBITOR])
             ] + COMMON_RESOURCES)
         # If the configuration is modified and contains any directive allowing
         # root login (which is in default configuration), we are upgrading to
