@@ -129,6 +129,50 @@
           "x86_64",
           "aarch64"
         ],
+        "id": "9121",
+        "in_packageset": {
+          "package": [
+            {
+              "name": "kernel",
+              "repository": "AppStream"
+            }
+          ],
+          "set_id": "8121"
+        },
+        "initial_release": {
+          "checked": true,
+          "major_version": 8,
+          "minor_version": 6,
+          "modified": "2020-04-01T09:00:00.0Z",
+          "os_name": "OC",
+          "tag": null,
+          "z_stream": null
+        },
+        "out_packageset": {
+          "package": [
+            {
+              "name": "kernel",
+              "repository": "baseos-rpms"
+            }
+          ],
+          "set_id": "9121"
+        },
+        "release": {
+          "checked": true,
+          "major_version": 9,
+          "minor_version": 0,
+          "modified": "2022-04-01T09:00:00.0Z",
+          "os_name": "OC",
+          "tag": null,
+          "z_stream": null
+        }
+      },
+      {
+        "action": 3,
+        "architectures": [
+          "x86_64",
+          "aarch64"
+        ],
         "id": "9120",
         "in_packageset": {
           "package": [
