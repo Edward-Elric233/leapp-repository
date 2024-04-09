@@ -39,7 +39,7 @@ def get_target_kernel_package_nevra(kernel_pkg_name):
     except CalledProcessError:
         return ''
 
-    target_kernel_el = 'tl{}'.format(get_target_major_version())
+    target_kernel_el = 'oc{}'.format(get_target_major_version())
     for kernel_nevra in kernel_nevras:
         if target_kernel_el in kernel_nevra:
             return kernel_nevra
