@@ -27,7 +27,7 @@ def get_kernel_pkg_name(rhel_major_version, kernel_type):
         }
     else:
         kernel_pkg_name_table = {
-            kernel_lib.KernelType.ORDINARY: 'kernel',
+            kernel_lib.KernelType.ORDINARY: 'kernel-core',
             kernel_lib.KernelType.REALTIME: 'kernel-rt-core'
         }
     return kernel_pkg_name_table[kernel_type]
