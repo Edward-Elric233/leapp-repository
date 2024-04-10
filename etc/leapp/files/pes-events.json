@@ -79,7 +79,8 @@
           "tag": null,
           "z_stream": null
         }
-      },{
+      },
+      {
         "action": 3,
         "architectures": [
           "x86_64",

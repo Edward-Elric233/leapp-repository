@@ -36,6 +36,8 @@ class DnfTransactionCheck(Actor):
     def process(self):
         run(['rm', '-rf', '/usr/lib/sysimage/rpm/'])
         run(['cp', '-r', '/var/lib/rpm', '/usr/lib/sysimage/'])
+        run(['rm', '-rf', '/usr/share/opencloudos-release'])
+        run(['touch', '/usr/share/opencloudos-release'])
         xfs_info = next(self.consume(XFSPresence), XFSPresence())
         storage_info = next(self.consume(StorageInfo), StorageInfo())
         used_repos = self.consume(UsedTargetRepositories)
