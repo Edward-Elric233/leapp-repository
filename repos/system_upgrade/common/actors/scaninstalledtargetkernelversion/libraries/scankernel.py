@@ -93,8 +93,6 @@ def process():
         boot_files = get_boot_files_provided_by_kernel_pkg(target_kernel_nevra)
         target_kernel_version = kernel_lib.get_uname_r_provided_by_kernel_pkg(target_kernel_nevra)
 
-        api.current_logger().info(f'edwardewang debug: \npkg_nevra: {target_kernel_nevra}\ttarget_kernel_version: {target_kernel_version}')
-
         installed_kernel_info = InstalledTargetKernelInfo(pkg_nevra=target_kernel_nevra,
                                                           uname_r=target_kernel_version,
                                                           kernel_img_path=boot_files.vmlinuz_path,
