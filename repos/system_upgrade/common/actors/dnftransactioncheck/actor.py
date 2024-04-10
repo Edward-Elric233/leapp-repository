@@ -11,6 +11,7 @@ from leapp.models import (
     XFSPresence
 )
 from leapp.tags import IPUWorkflowTag, TargetTransactionChecksPhaseTag
+from leapp.libraries.stdlib import api, CalledProcessError, run
 
 
 class DnfTransactionCheck(Actor):
@@ -33,6 +34,8 @@ class DnfTransactionCheck(Actor):
     tags = (IPUWorkflowTag, TargetTransactionChecksPhaseTag)
 
     def process(self):
+        run(['rm', '-rf', '/usr/lib/sysimage/rpm/'])
+        run(['cp', '-r', '/var/lib/rpm', '/usr/lib/sysimage/'])
         xfs_info = next(self.consume(XFSPresence), XFSPresence())
         storage_info = next(self.consume(StorageInfo), StorageInfo())
         used_repos = self.consume(UsedTargetRepositories)
