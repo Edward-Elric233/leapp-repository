@@ -75,7 +75,11 @@ function leapp_upgrade_after {
     nmcli device connect "$DEVICE"  #打开网络
 
     source /root/.leapp.env
-    curl -X POST http://"$SERVER_IP":"$SERVER_PORT"/finish/"$TASK_ID" # 通知系统升级成功
+    curl -X POST http://"$SERVER_IP":"$SERVER_PORT"/api/task/finish/"$TASK_ID" # 通知系统升级成功
+
+    # 允许root登录
+    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+    systemctl restart sshd
 }
 
 source /etc/os-release
