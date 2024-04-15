@@ -1,5 +1,5 @@
 # OpenCloudOS IPU Tool
-
+## 项目说明
 OpenCloudOS IPU Tool 是基于 RHEL Leapp-repository 的一款升级工具，用于原地迁移 OpenCloudOS
 系统到新的主要版本，旨在提供一个平滑、安全的迁移路径，同时保持系统设置和数据的完整性。
 通过持续的更新、规范化的开发流程和强大的功能扩展，希望成为TS系统用户的理想选择。
@@ -19,3 +19,28 @@ OpenCloudOS IPU Tool 是基于 RHEL Leapp-repository 的一款升级工具，用
     - **Web系统可视化控制**：集成Web界面，允许用户直观地管理和控制迁移流程，提供友好的操作体验和实时的进度反馈。
     - **自动化RPM差异数据提取**：开发一套自动化工具，用于分析并提取升级前后 RPM 包的差异数据，帮助用户理解每次升级的具体变化。
     - **迁移前备份功能**：增加在执行迁移操作前自动备份系统的功能，以防万一需要恢复到原始状态。
+
+## 安装运行
+打包 rpm 软件包：
+
+```bash
+make _build_local
+```
+
+执行结束后，在 `leapp-repository/packaging/RPMS/noarch/` 目录下安装生成的 rpm 包。
+
+也可以直接安装rpm目录下的所有rpm包：
+
+```bash
+ls *.rpm | xargs dnf install -y
+```
+
+安装结束后，运行以下命令进行升级：
+
+```bash
+# 预升级
+leapp preupgrade
+
+# 如果预升级成功，执行升级并重启
+leapp upgrade --reboot
+```
