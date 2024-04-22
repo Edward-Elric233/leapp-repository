@@ -3,7 +3,7 @@ SHELL=/bin/bash
 
 __PKGNAME=$${_PKGNAME:-leapp-repository}
 VENVNAME ?= tut
-DIST_VERSION ?= 7
+DIST_VERSION ?= 8
 PKGNAME=leapp-repository
 DEPS_PKGNAME=leapp-el7toel8-deps
 VERSION=`grep -m1 "^Version:" packaging/$(PKGNAME).spec | grep -om1 "[0-9].[0-9.]**"`
@@ -244,7 +244,7 @@ _build_local: source
 		--define "_buildrootdir `pwd`/packaging/BUILDROOT" \
 		--define "_rpmdir `pwd`/packaging/RPMS" \
 		--define "rhel $(DIST_VERSION)" \
-		--define "dist .el$(DIST_VERSION)" \
+		--define "dist .oc$(DIST_VERSION)" \
 		--define "el$(DIST_VERSION) 1" || FAILED=1
 	@mv packaging/$(PKGNAME).spec.bak packaging/$(PKGNAME).spec
 

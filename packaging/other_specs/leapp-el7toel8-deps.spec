@@ -129,5 +129,5 @@ Requires:   python3-requests
 # no files here
 
 %changelog
-* Tue Jan 22 2019 Petr Stodulka <pstodulk@redhat.com> - %{version}-%{release}
+* Mon Apr 22 2024 Edward Elric <edwardelric2333@gmail.com> - %{version}-%{release}
 - Initial rpm
